@@ -15,7 +15,7 @@
     position: relative;
   }
 
-  /* ✨ Cute floating hearts / illustrations */
+  /* ✨ Floating hearts and stars */
   .heart, .star {
     position: absolute;
     width: 15px;
@@ -54,17 +54,9 @@
   }
 
   @keyframes floatUp {
-    0% {
-      transform: translateY(0) rotate(0deg);
-      opacity: 0.7;
-    }
-    50% {
-      opacity: 1;
-    }
-    100% {
-      transform: translateY(-800px) rotate(360deg);
-      opacity: 0;
-    }
+    0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { transform: translateY(-800px) rotate(360deg); opacity: 0; }
   }
 
   h1 {
@@ -83,50 +75,50 @@
     height: 75vh;
   }
 
-  /* 🌸 LILY (UNCHANGED) */
+  /* 🌸 REALISTIC LILY WITH BLOOMING PETALS */
   .lily {
-    width: 220px;
-    height: 220px;
+    width: 200px;
+    height: 200px;
     margin: auto;
     margin-top: 120px;
-    background: radial-gradient(circle at center, #ffcad4 20%, #ff9ac6 50%, #ff5fa2 80%);
-    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-    transform: scale(0.3);
-    transition: transform 0.12s linear;
-    box-shadow: 0 0 40px rgba(255, 120, 170, 0.5);
     position: relative;
+    cursor: pointer;
   }
 
-  .lily::before,
-  .lily::after {
-    content: '';
+  .lily .petal {
+    width: 100px;
+    height: 140px;
+    background: radial-gradient(circle at top, #ffc0d0 0%, #ff5fa2 80%);
     position: absolute;
-    width: 220px;
-    height: 220px;
-    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-    background: radial-gradient(circle at center, #ffd0e0 15%, #ff5fa2 70%);
-    top: 0;
-    left: 0;
-    transform: rotate(15deg);
-    opacity: 0.6;
+    top: 50%;
+    left: 50%;
+    transform-origin: bottom center;
+    border-radius: 60% 60% 50% 50%;
+    opacity: 0;
+    z-index: 1;
+    box-shadow: 0 2px 10px rgba(255, 100, 150, 0.3);
+    transition: transform 0.3s, opacity 0.3s;
   }
 
-  .lily::after {
-    transform: rotate(-15deg);
-    animation: sparkle 2s infinite ease-in-out alternate;
+  .lily .center {
+    width: 40px;
+    height: 40px;
+    background: #ff7fae;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    z-index: 3;
+    box-shadow: 0 0 15px rgba(255, 100, 150, 0.5);
+    transition: transform 0.3s;
   }
 
-  @keyframes sparkle {
-    0%, 100% { opacity: 0.2; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.05); }
-  }
-
-  /* WATER POT */
+  /* WATER POT moved to top right */
   .pot {
     position: absolute;
-    bottom: 25px;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 25px;
+    right: 25px;
     cursor: grab;
     font-size: 1.3rem;
     background: #ffffffdd;
@@ -179,7 +171,14 @@
 
 <div class="scene">
 
-  <div id="lily" class="lily"></div>
+  <div id="lily" class="lily">
+    <div class="petal" style="--rot:-30deg"></div>
+    <div class="petal" style="--rot:-15deg"></div>
+    <div class="petal" style="--rot:0deg"></div>
+    <div class="petal" style="--rot:15deg"></div>
+    <div class="petal" style="--rot:30deg"></div>
+    <div class="center"></div>
+  </div>
 
   <div id="pot" class="pot" draggable="true">
     💧
@@ -192,7 +191,6 @@
   <div class="popup-content">
     <h2>🌸</h2>
     <p>
-      <!-- ✍️ CUSTOM MESSAGE HERE -->
       HAPPY ROSE DAY!!! (it's a lily but ok🌹)
       since, i can't get you flowers irl i made em heehe
       these will not die 🫶🏽 
@@ -204,6 +202,8 @@
 <script>
   const pot = document.getElementById("pot");
   const lily = document.getElementById("lily");
+  const petals = lily.querySelectorAll(".petal");
+  const center = lily.querySelector(".center");
   const popup = document.getElementById("popup");
   const music = document.getElementById("bgMusic");
 
@@ -224,7 +224,6 @@
     if (!watering) return;
 
     const rect = lily.getBoundingClientRect();
-
     if (
       e.clientX > rect.left &&
       e.clientX < rect.right &&
@@ -234,7 +233,14 @@
       bloom += 0.01;
       bloom = Math.min(bloom, 1);
 
-      lily.style.transform = `scale(${0.3 + bloom})`;
+      // open petals individually
+      petals.forEach((petal, i) => {
+        petal.style.opacity = bloom;
+        petal.style.transform = `translate(-50%, -50%) rotate(${[-30,-15,0,15,30][i]}deg) scale(${0.5 + bloom})`;
+      });
+
+      // grow center
+      center.style.transform = `translate(-50%, -50%) scale(${bloom})`;
 
       if (bloom >= 1) {
         popup.style.display = "flex";
@@ -243,7 +249,7 @@
     }
   });
 
-  // ✨ Generate floating hearts and stars
+  // floating hearts and stars
   for(let i = 0; i < 30; i++) {
     const heart = document.createElement('div');
     heart.classList.add('heart');
