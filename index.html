@@ -114,7 +114,7 @@
     transition: transform 0.3s;
   }
 
-  /* WATER POT moved to top right */
+  /* WATER POT at top right */
   .pot {
     position: absolute;
     top: 25px;
@@ -172,11 +172,11 @@
 <div class="scene">
 
   <div id="lily" class="lily">
-    <div class="petal" style="--rot:-30deg"></div>
-    <div class="petal" style="--rot:-15deg"></div>
-    <div class="petal" style="--rot:0deg"></div>
-    <div class="petal" style="--rot:15deg"></div>
-    <div class="petal" style="--rot:30deg"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
     <div class="center"></div>
   </div>
 
@@ -233,13 +233,13 @@
       bloom += 0.01;
       bloom = Math.min(bloom, 1);
 
-      // open petals individually
+      // Petals open individually
       petals.forEach((petal, i) => {
         petal.style.opacity = bloom;
         petal.style.transform = `translate(-50%, -50%) rotate(${[-30,-15,0,15,30][i]}deg) scale(${0.5 + bloom})`;
       });
 
-      // grow center
+      // Center grows
       center.style.transform = `translate(-50%, -50%) scale(${bloom})`;
 
       if (bloom >= 1) {
@@ -249,7 +249,7 @@
     }
   });
 
-  // floating hearts and stars
+  // Floating hearts and stars
   for(let i = 0; i < 30; i++) {
     const heart = document.createElement('div');
     heart.classList.add('heart');
