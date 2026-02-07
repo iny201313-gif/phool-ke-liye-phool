@@ -15,106 +15,22 @@
     position: relative;
   }
 
-  /* ✨ Floating hearts and stars */
-  .heart, .star {
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    background: pink;
-    border-radius: 50%;
-    opacity: 0.7;
-    animation: floatUp linear infinite;
-  }
-
-  .heart::before, .heart::after {
-    content: "";
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    background: pink;
-    border-radius: 50%;
-  }
-
-  .heart::before {
-    top: -7px;
-    left: 0;
-  }
-
-  .heart::after {
-    top: 0;
-    left: -7px;
-  }
-
-  .star {
-    width: 8px;
-    height: 8px;
-    background: #fff0f5;
-    border-radius: 50%;
-    opacity: 0.6;
-  }
-
-  @keyframes floatUp {
-    0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
-    50% { opacity: 1; }
-    100% { transform: translateY(-800px) rotate(360deg); opacity: 0; }
-  }
-
   h1 {
     margin-top: 20px;
     font-size: 2.3rem;
     color: #c94c7c;
+    z-index: 1000;
+    position: relative;
   }
 
   .subtitle {
     color: #a85a7a;
     margin-bottom: 10px;
-  }
-
-  .scene {
+    z-index: 1000;
     position: relative;
-    height: 75vh;
   }
 
-  /* 🌸 REALISTIC LILY WITH BLOOMING PETALS */
-  .lily {
-    width: 200px;
-    height: 200px;
-    margin: auto;
-    margin-top: 120px;
-    position: relative;
-    cursor: pointer;
-  }
-
-  .lily .petal {
-    width: 100px;
-    height: 140px;
-    background: radial-gradient(circle at top, #ffc0d0 0%, #ff5fa2 80%);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform-origin: bottom center;
-    border-radius: 60% 60% 50% 50%;
-    opacity: 0;
-    z-index: 1;
-    box-shadow: 0 2px 10px rgba(255, 100, 150, 0.3);
-    transition: transform 0.3s, opacity 0.3s;
-  }
-
-  .lily .center {
-    width: 40px;
-    height: 40px;
-    background: #ff7fae;
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    z-index: 3;
-    box-shadow: 0 0 15px rgba(255, 100, 150, 0.5);
-    transition: transform 0.3s;
-  }
-
-  /* WATER POT at top right */
+  /* WATER POT */
   .pot {
     position: absolute;
     top: 25px;
@@ -126,6 +42,7 @@
     border-radius: 30px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.15);
     user-select: none;
+    z-index: 1000;
   }
 
   .pot span {
@@ -134,14 +51,15 @@
     color: #a85a7a;
   }
 
-  /* POPUP */
+  /* POPUP ON TOP */
   .popup {
     position: fixed;
     inset: 0;
-    background: rgba(255, 214, 232, 0.92);
     display: none;
     align-items: center;
     justify-content: center;
+    z-index: 9999; /* guaranteed on top */
+    background: rgba(255,214,232,0.92);
   }
 
   .popup-content {
@@ -157,6 +75,108 @@
     from { transform: scale(0.7); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
   }
+
+  .scene {
+    position: relative;
+    height: 75vh;
+    z-index: 0;
+  }
+
+  /* STEM */
+  .stem {
+    width: 6px;
+    height: 200px;
+    background: #4caf50;
+    margin: auto;
+    margin-top: 120px;
+    border-radius: 3px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* LEAVES */
+  .leaf {
+    width: 60px;
+    height: 20px;
+    background: #4caf50;
+    border-radius: 50%;
+    position: absolute;
+    top: 100px;
+    z-index: 1;
+    transform-origin: left center;
+    transform: rotate(-30deg) scaleX(0);
+    transition: transform 0.5s;
+  }
+  .leaf.right {
+    left: 10px;
+    transform: rotate(30deg) scaleX(0);
+    transform-origin: right center;
+  }
+  .leaf.left {
+    right: 10px;
+  }
+
+  /* PETALS */
+  .petal {
+    width: 100px;
+    height: 140px;
+    background: radial-gradient(circle at top, #ffc0d0 0%, #ff5fa2 80%);
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform-origin: bottom center;
+    border-radius: 60% 60% 50% 50%;
+    opacity: 0;
+    z-index: 2;
+    box-shadow: 0 2px 10px rgba(255, 100, 150, 0.3);
+    transition: transform 0.5s, opacity 0.5s;
+  }
+
+  .center {
+    width: 40px;
+    height: 40px;
+    background: #ff7fae;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    z-index: 3;
+    box-shadow: 0 0 15px rgba(255, 100, 150, 0.5);
+    transition: transform 0.5s;
+  }
+
+  /* Floating hearts */
+  .heart, .star {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    opacity: 0.7;
+  }
+  .heart::before, .heart::after {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+  }
+  .heart::before { top: -7px; left: 0; }
+  .heart::after { top: 0; left: -7px; }
+  .star {
+    width: 8px;
+    height: 8px;
+    background: #fff0f5;
+    border-radius: 50%;
+    opacity: 0.6;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { transform: translateY(-800px) rotate(360deg); opacity: 0; }
+  }
+
 </style>
 </head>
 
@@ -171,12 +191,14 @@
 
 <div class="scene">
 
-  <div id="lily" class="lily">
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
-    <div class="petal"></div>
+  <div class="stem">
+    <div class="leaf left"></div>
+    <div class="leaf right"></div>
+    <div class="petal" style="--rot:-30deg"></div>
+    <div class="petal" style="--rot:-15deg"></div>
+    <div class="petal" style="--rot:0deg"></div>
+    <div class="petal" style="--rot:15deg"></div>
+    <div class="petal" style="--rot:30deg"></div>
     <div class="center"></div>
   </div>
 
@@ -187,6 +209,7 @@
 
 </div>
 
+<!-- Popup on top of everything -->
 <div id="popup" class="popup">
   <div class="popup-content">
     <h2>🌸</h2>
@@ -201,68 +224,58 @@
 
 <script>
   const pot = document.getElementById("pot");
-  const lily = document.getElementById("lily");
-  const petals = lily.querySelectorAll(".petal");
-  const center = lily.querySelector(".center");
+  const stem = document.querySelector(".stem");
+  const petals = stem.querySelectorAll(".petal");
+  const leaves = stem.querySelectorAll(".leaf");
+  const center = stem.querySelector(".center");
   const popup = document.getElementById("popup");
   const music = document.getElementById("bgMusic");
 
   let bloom = 0;
   let watering = false;
 
-  pot.addEventListener("dragstart", () => {
-    watering = true;
-    music.play();
-  });
-
-  pot.addEventListener("dragend", () => {
-    watering = false;
-  });
+  pot.addEventListener("dragstart", () => { watering = true; music.play(); });
+  pot.addEventListener("dragend", () => watering = false);
 
   document.addEventListener("dragover", (e) => {
     e.preventDefault();
     if (!watering) return;
-
-    const rect = lily.getBoundingClientRect();
-    if (
-      e.clientX > rect.left &&
-      e.clientX < rect.right &&
-      e.clientY > rect.top &&
-      e.clientY < rect.bottom
-    ) {
+    const rect = stem.getBoundingClientRect();
+    if (e.clientX > rect.left && e.clientX < rect.right &&
+        e.clientY > rect.top && e.clientY < rect.bottom) {
       bloom += 0.01;
       bloom = Math.min(bloom, 1);
 
-      // Petals open individually
+      // petals open
       petals.forEach((petal, i) => {
         petal.style.opacity = bloom;
         petal.style.transform = `translate(-50%, -50%) rotate(${[-30,-15,0,15,30][i]}deg) scale(${0.5 + bloom})`;
       });
 
-      // Center grows
+      // center grows
       center.style.transform = `translate(-50%, -50%) scale(${bloom})`;
 
+      // leaves appear
+      leaves.forEach(leaf => leaf.style.transform = leaf.classList.contains("left") ? `rotate(-30deg) scaleX(${bloom})` : `rotate(30deg) scaleX(${bloom})`);
+
       if (bloom >= 1) {
-        popup.style.display = "flex";
-        watering = false;
+        setTimeout(() => { popup.style.display = "flex"; }, 200); // popup above lily
       }
     }
   });
 
-  // Floating hearts and stars
-  for(let i = 0; i < 30; i++) {
-    const heart = document.createElement('div');
-    heart.classList.add('heart');
-    heart.style.left = Math.random() * 100 + 'vw';
-    heart.style.bottom = Math.random() * 20 + 'px';
-    heart.style.animationDuration = (5 + Math.random() * 5) + 's';
+  // Floating hearts
+  for(let i = 0; i < 30; i++){
+    const heart = document.createElement('div'); heart.classList.add('heart');
+    heart.style.left = Math.random()*100 + 'vw';
+    heart.style.bottom = Math.random()*20 + 'px';
+    heart.style.animation = `floatUp ${5+Math.random()*5}s linear infinite`;
     document.body.appendChild(heart);
 
-    const star = document.createElement('div');
-    star.classList.add('star');
-    star.style.left = Math.random() * 100 + 'vw';
-    star.style.bottom = Math.random() * 20 + 'px';
-    star.style.animationDuration = (6 + Math.random() * 6) + 's';
+    const star = document.createElement('div'); star.classList.add('star');
+    star.style.left = Math.random()*100 + 'vw';
+    star.style.bottom = Math.random()*20 + 'px';
+    star.style.animation = `floatUp ${6+Math.random()*6}s linear infinite`;
     document.body.appendChild(star);
   }
 </script>
